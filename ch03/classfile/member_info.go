@@ -2,18 +2,18 @@ package classfile
 
 // 成员变量和方法都用这个结构体描述
 type MemberInfo struct {
-	cp ConstantPool
-	accessFlags uint16
-	nameIndex uint16
+	cp              ConstantPool
+	accessFlags     uint16
+	nameIndex       uint16
 	descriptorIndex uint16
-	attributes []AttributeInfo
+	attributes      []AttributeInfo
 }
 
 func readMembers(reader *ClassReader, cp ConstantPool) []*MemberInfo {
 	memberCount := reader.readUint16()
 	members := make([]*MemberInfo, memberCount)
-	for i:= range members {
-		members[i] = readMembers(reader, cp)
+	for i := range members {
+		members[i] = readMember(reader, cp)
 	}
 	return members
 }
@@ -41,4 +41,3 @@ func (self *MemberInfo) Name() string {
 func (self *MemberInfo) Descriptor() string {
 	return self.cp.getUtf8(self.descriptorIndex)
 }
-
