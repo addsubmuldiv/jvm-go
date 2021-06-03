@@ -1,7 +1,9 @@
 // 4个数字常量及其对应的readInfo方法
 package classfile
 
-import "math"
+import (
+	"math"
+)
 
 /*
 CONSTANT_Integer_info {

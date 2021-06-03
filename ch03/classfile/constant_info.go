@@ -1,6 +1,7 @@
+// 单个常量
 package classfile
 
-// 常量池tag
+// 常量tag
 const (
 	CONSTANT_Class              = 7
 	CONSTANT_Fieldref           = 9
@@ -18,7 +19,13 @@ const (
 	CONSTANT_InvokeDynamic      = 18
 )
 
-
+// 带个readInfo方法就是一个常量了
+/*
+cp_info {
+    u1 tag;		// 各常量对象不需要存tag，它只是方便你把在建对象的时候好区分
+    u1 info[];
+}
+*/
 type ConstantInfo interface {
 	readInfo(reader *ClassReader)
 }
@@ -26,8 +33,8 @@ type ConstantInfo interface {
 // 读出tag然后创建常量，然后调用常量的readInfo读出常量的信息
 func readConstantInfo(reader *ClassReader, cp ConstantPool) ConstantInfo {
 	tag := reader.readUint8()
-	c := newConstantInfo(tag, cp)	// 根据tag，创建对应常量
-	c.readInfo(reader)		// 调用各自常量的 readInfo，每个常量各取自身所需的字节数
+	c := newConstantInfo(tag, cp) // 根据tag，创建对应常量
+	c.readInfo(reader)            // 调用各自常量的 readInfo，每个常量各取自身所需的字节数
 	return c
 }
 

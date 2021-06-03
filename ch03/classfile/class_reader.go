@@ -1,3 +1,4 @@
+// 定义了几个用来读取class文件不同字节数的几个方法
 package classfile
 
 import "encoding/binary"

@@ -9,7 +9,7 @@ SourceFile_attribute {
 */
 type SourceFileAttribute struct {
 	cp              ConstantPool
-	sourceFileIndex uint16
+	sourceFileIndex uint16 //源文件的文件名在常量池中的索引
 }
 
 func (self *SourceFileAttribute) readInfo(reader *ClassReader) {

@@ -1,3 +1,4 @@
+// 解析类文件，最顶层的一个类
 package classfile
 
 import "fmt"
@@ -80,7 +81,7 @@ func (self *ClassFile) readAndCheckVersion(reader *ClassReader) {
 	switch self.majorVersion {
 	case 45:
 		return
-	case 46, 47, 48, 49, 50, 51, 52, 53, 54, 55:	//支持到jdk 11，尽管语法并不一定都支持……
+	case 46, 47, 48, 49, 50, 51, 52, 53, 54, 55: //支持到jdk 11，尽管语法并不一定都支持……
 		if self.minorVersion == 0 {
 			return
 		}

@@ -1,3 +1,4 @@
+// 用于支持invokedynamic指令，即 java 7 的时候为了支持动态类型检查引入的东西，lambda表达式的基石？
 package classfile
 
 /*
@@ -47,4 +48,3 @@ func (self *ConstantInvokeDynamicInfo) readInfo(reader *ClassReader) {
 	self.bootstrapMethodAttrIndex = reader.readUint16()
 	self.nameAndTypeIndex = reader.readUint16()
 }
-

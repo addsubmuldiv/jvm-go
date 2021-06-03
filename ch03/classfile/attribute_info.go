@@ -1,9 +1,12 @@
+// 属性，比常量要灵活许多
+// 一个属性名，一个属性长度，后边就是各个属性自己定义的了
+// 各个属性结构可能很不一样
 package classfile
 
 /*
 attribute_info {
-    u2 attribute_name_index;
-    u4 attribute_length;
+    u2 attribute_name_index;	// 实际的属性实现中我们不需要name_index和length，这俩只是为了我们方便把对应的属性
+    u4 attribute_length;		// 对象建立起来
     u1 info[attribute_length];
 }
 */

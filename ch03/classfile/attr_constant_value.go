@@ -1,3 +1,4 @@
+// 在field_info中，用于指向对应字段的真正的值在常量池中的索引
 package classfile
 
 /*

@@ -1,12 +1,12 @@
 package classfile
 
-// 成员变量和方法都用这个结构体描述
+// 类自己定义的成员变量和方法都用这个结构体描述
 type MemberInfo struct {
 	cp              ConstantPool
-	accessFlags     uint16
-	nameIndex       uint16
-	descriptorIndex uint16
-	attributes      []AttributeInfo
+	accessFlags     uint16          // 访问标记
+	nameIndex       uint16          // 名字
+	descriptorIndex uint16          // 描述符
+	attributes      []AttributeInfo // 如果是成员变量，那这里会有个ConstantValue属性，指向这个字段的值在常量池的索引
 }
 
 func readMembers(reader *ClassReader, cp ConstantPool) []*MemberInfo {
