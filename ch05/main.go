@@ -1,9 +1,11 @@
 package main
 
-import "fmt"
-import _ "ch04/classfile"
-import _ "ch04/classpath"
-import "ch04/rtda"
+import _ "ch05/classfile"
+import _ "ch05/classpath"
+import (
+	"ch05/rtda"
+	"fmt"
+)
 
 func main() {
 	cmd := parseCmd()
