@@ -3,7 +3,7 @@ package constants
 import "ch05/instructions/base"
 import "ch05/rtda"
 
-// Push null
+// ACONST_NULL Push null
 type ACONST_NULL struct{ base.NoOperandsInstruction }
 
 func (self *ACONST_NULL) Execute(frame *rtda.Frame) {

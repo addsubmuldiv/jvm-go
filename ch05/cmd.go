@@ -19,7 +19,7 @@ type Cmd struct {
 func parseCmd() *Cmd {
 	cmd := &Cmd{}
 	flag.Usage = printUsage
-	flag.BoolVar(&cmd.helpFlag, "help", false, "print help message")	//这些bool参数，加 - 即可
+	flag.BoolVar(&cmd.helpFlag, "help", false, "print help message") //这些bool参数，加 - 即可
 	flag.BoolVar(&cmd.helpFlag, "?", false, "print help message")
 	flag.BoolVar(&cmd.versionFlag, "version", false, "print version and exit")
 	flag.StringVar(&cmd.cpOption, "classpath", "", "classpath")
@@ -27,7 +27,7 @@ func parseCmd() *Cmd {
 	flag.StringVar(&cmd.XjreOption, "Xjre", "", "path to jre")
 	flag.Parse()
 
-	args := flag.Args()	// 这里捕获参数
+	args := flag.Args() // 这里捕获参数
 	if len(args) > 0 {
 		cmd.class = args[0]
 		cmd.args = args[1:]
