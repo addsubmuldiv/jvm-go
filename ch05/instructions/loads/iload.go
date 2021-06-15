@@ -8,6 +8,8 @@ import (
 )
 
 // ILOAD Load int from local variable
+// 注意这里用的嵌套是 base.Index8Instruction，说明它要读取一个字节的操作数
+// 下面几个方法则是 索引隐含在指令中了
 type ILOAD struct{ base.Index8Instruction }
 
 func (self *ILOAD) Execute(frame *rtda.Frame) {

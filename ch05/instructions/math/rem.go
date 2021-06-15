@@ -6,7 +6,7 @@ import (
 	"math"
 )
 
-// Remainder double
+// DREM Remainder double
 type DREM struct{ base.NoOperandsInstruction }
 
 func (self *DREM) Execute(frame *rtda.Frame) {

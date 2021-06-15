@@ -2,11 +2,17 @@ package rtda
 
 import "math"
 
-// 操作数栈
+// OperandStack 操作数栈
+// 实现上和局部变量表差不多，就是封装成栈
+// 不允许随机存取了, 用来根据各类指令做运算
+// jvm本质上就是一个堆栈计算机
+// 注意！！ 操作数栈的大小是编译器已经确定的
 type OperandStack struct {
-	size  uint
-	slots []Slot
+	size  uint   // 记录栈顶位置
+	slots []Slot // 存数据
 }
+
+// 以下就是对一些数据类型的压栈出栈操作
 
 func newOperandStack(maxStack uint) *OperandStack {
 	if maxStack > 0 {

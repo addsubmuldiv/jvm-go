@@ -1,10 +1,12 @@
 package base
 
+// BytecodeReader 字节码读取器，就是由字节码和当前读到的PC组成
 type BytecodeReader struct {
 	code []byte
 	pc   int
 }
 
+// Reset 就是一个初始化
 func (self *BytecodeReader) Reset(code []byte, pc int) {
 	self.code = code
 	self.pc = pc

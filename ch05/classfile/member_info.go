@@ -1,6 +1,6 @@
 package classfile
 
-// 类自己定义的成员变量和方法都用这个结构体描述
+// MemberInfo 类自己定义的成员变量和方法都用这个结构体描述
 type MemberInfo struct {
 	cp              ConstantPool
 	accessFlags     uint16          // 访问标记
