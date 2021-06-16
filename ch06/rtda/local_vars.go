@@ -1,6 +1,9 @@
 package rtda
 
-import "math"
+import (
+	"ch06/rtda/heap"
+	"math"
+)
 
 // LocalVars 主要用于存储方法参数（形参）和定义在方法体内的局部变量，最基本的存储单位是Slot。
 // 存放编译期可知的各种基本数据类型，8种数据类型，引用类型（reference），returnAddress类型的变量。
@@ -59,9 +62,9 @@ func (self LocalVars) GetDouble(index uint) float64 {
 	return math.Float64frombits(bits)
 }
 
-func (self LocalVars) SetRef(index uint, ref *Object) {
+func (self LocalVars) SetRef(index uint, ref *heap.Object) {
 	self[index].ref = ref
 }
-func (self LocalVars) GetRef(index uint) *Object {
+func (self LocalVars) GetRef(index uint) *heap.Object {
 	return self[index].ref
 }

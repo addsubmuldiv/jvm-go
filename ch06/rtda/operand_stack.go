@@ -1,6 +1,9 @@
 package rtda
 
-import "math"
+import (
+	"ch06/rtda/heap"
+	"math"
+)
 
 // OperandStack 操作数栈
 // 实现上和局部变量表差不多，就是封装成栈
@@ -66,11 +69,11 @@ func (self *OperandStack) PopDouble() float64 {
 	return math.Float64frombits(bits)
 }
 
-func (self *OperandStack) PushRef(ref *Object) {
+func (self *OperandStack) PushRef(ref *heap.Object) {
 	self.slots[self.size].ref = ref
 	self.size++
 }
-func (self *OperandStack) PopRef() *Object {
+func (self *OperandStack) PopRef() *heap.Object {
 	self.size--
 	ref := self.slots[self.size].ref
 	self.slots[self.size].ref = nil
