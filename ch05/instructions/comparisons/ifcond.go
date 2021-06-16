@@ -1,6 +1,7 @@
 // Package comparisons if 语句的指令
 package comparisons
 
+// 这一组条件转移是与 0 比较
 import (
 	"ch05/instructions/base"
 	"ch05/rtda"

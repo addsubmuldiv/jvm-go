@@ -37,7 +37,7 @@ func (self *MemberInfo) Name() string {
 	return self.cp.getUtf8(self.nameIndex)
 }
 
-// TODO 这是个啥——每个成员标记它的类型、参数类型、返回类型之类
+// TODO 这是个啥 —— 每个成员标记它的类型、参数类型、返回类型之类
 func (self *MemberInfo) Descriptor() string {
 	return self.cp.getUtf8(self.descriptorIndex)
 }

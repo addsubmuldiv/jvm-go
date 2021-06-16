@@ -1,6 +1,7 @@
 // Package comparisons if_icmp<cond>指令把栈顶的两个int变量弹出，然后进行比较，满足条件则跳转。
 package comparisons
 
+// 这一组条件转移是从操作数栈的栈顶取俩数来比较
 import (
 	"ch05/instructions/base"
 	"ch05/rtda"

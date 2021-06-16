@@ -1,5 +1,6 @@
 package math
 
+// MOD 运算
 import (
 	"ch05/instructions/base"
 	"ch05/rtda"
