@@ -1,7 +1,10 @@
+// stores 这里
 package stores
 
-import "ch05/instructions/base"
-import "ch05/rtda"
+import (
+	"ch05/instructions/base"
+	"ch05/rtda"
+)
 
 // Store int into local variable
 type ISTORE struct{ base.Index8Instruction }

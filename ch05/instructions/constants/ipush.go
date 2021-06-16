@@ -1,6 +1,6 @@
 package constants
 
-// 从操作数中拿到的常量, TODO 为啥是只有8位和16位的？
+// 从操作数中拿到的常量, TODO 为啥是只有8位和16位的？ —— 见本章的 README.md
 import (
 	"ch05/instructions/base"
 	"ch05/rtda"
