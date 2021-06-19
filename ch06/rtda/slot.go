@@ -1,6 +1,8 @@
 package rtda
 
-import "ch06/rtda/heap"
+import (
+	"ch06/rtda/heap"
+)
 
 // Slot 局部变量表的构成元素
 type Slot struct {
