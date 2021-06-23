@@ -69,7 +69,8 @@ func (self *Class) StaticVars() Slots {
 	return self.staticVars
 }
 
-// jvms 5.4.4
+// jvms 5.4.4  如果类D想访问类C，需要满足两个条件之一：
+// C是public，或者C和D在同一个运行时包内。
 func (self *Class) isAccessibleTo(other *Class) bool {
 	return self.IsPublic() ||
 		self.getPackageName() == other.getPackageName()
