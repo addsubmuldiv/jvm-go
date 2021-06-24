@@ -2,7 +2,6 @@ package heap
 
 import (
 	"ch06/classfile"
-	. "ch06/rtda"
 	"strings"
 )
 

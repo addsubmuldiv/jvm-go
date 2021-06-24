@@ -1,5 +1,7 @@
 package rtda
 
+import "ch06/rtda/heap"
+
 // Frame 栈帧，由于虚拟机栈采用的链栈实现
 // 因此有个lower指向栈中的下一个元素
 // 每个栈帧都有个局部变量表和操作数栈
@@ -10,14 +12,16 @@ type Frame struct {
 	localVars    LocalVars
 	operandStack *OperandStack
 	thread       *Thread
+	method       *heap.Method
 	nextPC       int // the next instruction after the call
 }
 
-func newFrame(thread *Thread, maxLocals, maxStack uint) *Frame {
+func newFrame(thread *Thread, method *heap.Method) *Frame {
 	return &Frame{
 		thread:       thread,
-		localVars:    newLocalVars(maxLocals),
-		operandStack: newOperandStack(maxStack),
+		method:       method,
+		localVars:    newLocalVars(method.MaxLocals()),
+		operandStack: newOperandStack(method.MaxStack()),
 	}
 }
 
@@ -33,6 +37,9 @@ func (self *Frame) Thread() *Thread {
 }
 func (self *Frame) NextPC() int {
 	return self.nextPC
+}
+func (self *Frame) Method() *heap.Method {
+	return self.method
 }
 func (self *Frame) SetNextPC(nextPC int) {
 	self.nextPC = nextPC
