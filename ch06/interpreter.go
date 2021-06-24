@@ -1,26 +1,20 @@
 package main
 
 import (
-	"ch06/classfile"
 	"ch06/instructions"
 	"ch06/instructions/base"
 	"ch06/rtda"
+	"ch06/rtda/heap"
 	"fmt"
 )
 
 // 虚拟机执行代码的起始入口，从 class 文件里面的 methodInfo 入手
-func interpret(methodInfo *classfile.MemberInfo) {
-	codeAttr := methodInfo.CodeAttribute() // 获取这个方法的代码属性
-	maxLocals := codeAttr.MaxLocals()      // 获取已经计算好的局部变量表
-	maxStack := codeAttr.MaxStack()        // 最大操作数栈
-	bytecode := codeAttr.Code()            // 获取字节码
-
+func interpret(method *heap.Method) {
 	thread := rtda.NewThread() // 新建一个线程
-	frame := thread.NewFrame(maxLocals, maxStack)
+	frame := thread.NewFrame(method)
 	thread.PushFrame(frame) // 线程本质就是一堆以栈形式存起来的栈帧 + 一个PC，这里就是新建一个帧然后放进虚拟机栈
-
 	defer catchErr(frame)
-	loop(thread, bytecode)
+	loop(thread, method.Code())
 }
 
 func catchErr(frame *rtda.Frame) {

@@ -1,14 +1,19 @@
 package heap
 
-import (
-	"ch06/classfile"
-	"ch06/classpath"
-	"fmt"
-)
+import "fmt"
+import "ch06/classfile"
+import "ch06/classpath"
 
+/*
+class names:
+    - primitive types: boolean, byte, int ...
+    - primitive arrays: [Z, [B, [I ...
+    - non-array classes: java/lang/Object ...
+    - array classes: [Ljava/lang/Object; ...
+*/
 type ClassLoader struct {
 	cp       *classpath.Classpath
-	classMap map[string]*Class
+	classMap map[string]*Class // loaded classes
 }
 
 func NewClassLoader(cp *classpath.Classpath) *ClassLoader {
@@ -20,13 +25,13 @@ func NewClassLoader(cp *classpath.Classpath) *ClassLoader {
 
 func (self *ClassLoader) LoadClass(name string) *Class {
 	if class, ok := self.classMap[name]; ok {
+		// already loaded
 		return class
 	}
+
 	return self.loadNonArrayClass(name)
 }
 
-// 类的加载大致可以分为三个步骤：首先找到class文件并把数据读取到内存；然后解析class文件，
-// 生成虚拟机可以使用的类数据，并放入方法区；最后进行链接。
 func (self *ClassLoader) loadNonArrayClass(name string) *Class {
 	data, entry := self.readClass(name)
 	class := self.defineClass(data)
@@ -73,7 +78,7 @@ func resolveInterfaces(class *Class) {
 	if interfaceCount > 0 {
 		class.interfaces = make([]*Class, interfaceCount)
 		for i, interfaceName := range class.interfaceNames {
-			class.interfaces[i] = class.loader.LoadClass(interfaceName) // 这里也是  LoadClass
+			class.interfaces[i] = class.loader.LoadClass(interfaceName)
 		}
 	}
 }
@@ -84,7 +89,7 @@ func link(class *Class) {
 }
 
 func verify(class *Class) {
-	// todo	书里并没有讨论，虚拟机规范里有介绍怎样验证
+	// todo
 }
 
 // jvms 5.4.2

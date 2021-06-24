@@ -1,5 +1,7 @@
 package rtda
 
+import "ch06/rtda/heap"
+
 // Thread 运行时数据区的半壁江山，线程
 // 每个线程有对应的程序计数器，以及一个jvm虚拟机栈
 // 栈里面存储的是帧Frame
@@ -38,6 +40,6 @@ func (self *Thread) CurrentFrame() *Frame {
 }
 
 // NewFrame 新建一个栈帧，俩参数是最大局部变量表大小、最大操作数栈大小
-func (self *Thread) NewFrame(maxLocals, maxStack uint) *Frame {
-	return newFrame(self, maxLocals, maxStack)
+func (self *Thread) NewFrame(method *heap.Method) *Frame {
+	return newFrame(self, method)
 }
