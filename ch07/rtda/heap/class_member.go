@@ -2,11 +2,12 @@ package heap
 
 import "ch07/classfile"
 
+// 方法和字段都用这个，对它进行嵌套
 type ClassMember struct {
 	accessFlags uint16
 	name        string
 	descriptor  string
-	class       *Class
+	class       *Class // 从字段或方法可以看它的所属类
 }
 
 func (self *ClassMember) copyMemberInfo(memberInfo *classfile.MemberInfo) {

@@ -23,6 +23,8 @@ type Class struct {
 	staticVars        Slots // todo 静态变量也用 Slot ？？
 }
 
+// classfile 读取文件，然后从 classfile 里面把类相关的信息都取出来，放在这里
+// 有点 java web 分层的味道
 func newClass(cf *classfile.ClassFile) *Class {
 	class := &Class{}
 	class.accessFlags = cf.AccessFlags()
@@ -82,6 +84,7 @@ func (self *Class) getPackageName() string {
 	return ""
 }
 
+// 获取一个静态方法，是通过 方法名和描述符 来操作的
 func (self *Class) getStaticMethod(name, descriptor string) *Method {
 	for _, method := range self.methods {
 		if method.IsStatic() &&
