@@ -1,9 +1,10 @@
 package heap
 
+// 符号引用公用的嵌套类
 type SymRef struct {
-	cp        *ConstantPool
-	className string
-	class     *Class
+	cp        *ConstantPool // 存放符号引用所在常量池的指针
+	className string        // 符号引用的类名
+	class     *Class        // 缓存被引用的那个类型的指针
 }
 
 func (self *SymRef) ResolvedClass() *Class {

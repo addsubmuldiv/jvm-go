@@ -15,7 +15,7 @@ class names:
 */
 type ClassLoader struct {
 	cp       *classpath.Classpath
-	classMap map[string]*Class
+	classMap map[string]*Class // 可以把这个理解为方法区
 }
 
 func NewClassLoader(cp *classpath.Classpath) *ClassLoader {
@@ -25,6 +25,7 @@ func NewClassLoader(cp *classpath.Classpath) *ClassLoader {
 	}
 }
 
+// 如果已经在方法区了，就返回类型，不在再去load
 func (self *ClassLoader) LoadClass(name string) *Class {
 	if class, ok := self.classMap[name]; ok {
 		return class
@@ -42,6 +43,7 @@ func (self *ClassLoader) loadNonArrayClass(name string) *Class {
 	return class
 }
 
+// 把字节码读取出来
 func (self *ClassLoader) readClass(name string) ([]byte, classpath.Entry) {
 	data, entry, err := self.cp.ReadClass(name)
 	if err != nil {
@@ -54,12 +56,13 @@ func (self *ClassLoader) readClass(name string) ([]byte, classpath.Entry) {
 func (self *ClassLoader) defineClass(data []byte) *Class {
 	class := parseClass(data)
 	class.loader = self
-	resolveSuperClass(class)
+	resolveSuperClass(class) // 层层递归读取超类
 	resolveInterfaces(class)
 	self.classMap[class.name] = class
 	return class
 }
 
+// 给定字节码，得到一个 class 结构体类型
 func parseClass(data []byte) *Class {
 	cf, err := classfile.Parse(data)
 	if err != nil {
@@ -72,7 +75,7 @@ func parseClass(data []byte) *Class {
 // jvms 5.4.3.1
 func resolveSuperClass(class *Class) {
 	if class.name != "java/lang/Object" {
-		class.superClass = class.loader.LoadClass(class.superClassName)
+		class.superClass = class.loader.LoadClass(class.superClassName) // 这里实际上形成了递归
 	}
 }
 func resolveInterfaces(class *Class) {
@@ -85,26 +88,30 @@ func resolveInterfaces(class *Class) {
 	}
 }
 
+// 类的链接
 func link(class *Class) {
 	verify(class)
 	prepare(class)
 }
 
+// 验证，对 class 进行检查
 func verify(class *Class) {
 	// todo	书里并没有讨论，虚拟机规范里有介绍怎样验证
 }
 
 // jvms 5.4.2
+// 准备阶段主要是给类变量分配空间并给予初始值
 func prepare(class *Class) {
 	calcInstanceFieldSlotIds(class)
 	calcStaticFieldSlotIds(class)
 	allocAndInitStaticVars(class)
 }
 
+// 计算实例字段的个数
 func calcInstanceFieldSlotIds(class *Class) {
 	slotId := uint(0)
 	if class.superClass != nil {
-		slotId = class.superClass.instanceSlotCount
+		slotId = class.superClass.instanceSlotCount // 要加上超类的实例字段个数
 	}
 	for _, field := range class.fields {
 		if !field.IsStatic() {
@@ -118,6 +125,7 @@ func calcInstanceFieldSlotIds(class *Class) {
 	class.instanceSlotCount = slotId
 }
 
+// 计算静态字段个数   todo 为什么静态字段不用算超类的个数?
 func calcStaticFieldSlotIds(class *Class) {
 	slotId := uint(0)
 	for _, field := range class.fields {
@@ -135,16 +143,17 @@ func calcStaticFieldSlotIds(class *Class) {
 func allocAndInitStaticVars(class *Class) {
 	class.staticVars = newSlots(class.staticSlotCount)
 	for _, field := range class.fields {
-		if field.IsStatic() && field.IsFinal() {
-			initStaticFinalVar(class, field)
+		if field.IsStatic() && field.IsFinal() { // 如果是静态、final的
+			initStaticFinalVar(class, field) // 进行初始化，这些初始值是存在 常量池 的
 		}
 	}
 }
 
+// initStaticFinalVar 函数从常量池中加载常量值，然后给静态变量赋值
 func initStaticFinalVar(class *Class, field *Field) {
-	vars := class.staticVars
-	cp := class.constantPool
-	cpIndex := field.ConstValueIndex()
+	vars := class.staticVars           // 获取类的静态字段表
+	cp := class.constantPool           // 常量池
+	cpIndex := field.ConstValueIndex() // 字段在常量池的index
 	slotId := field.SlotId()
 
 	if cpIndex > 0 {

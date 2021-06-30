@@ -37,7 +37,7 @@ type ClassFile struct {
 	attributes   []AttributeInfo
 }
 
-// 从字节数组中读取class
+// Parse 从字节码中把 class 的数据解析出来，存到 classfile 类型里面，classfile 类似于一个 临时仓库
 func Parse(classData []byte) (cf *ClassFile, err error) {
 	defer func() {
 		if r := recover(); r != nil {

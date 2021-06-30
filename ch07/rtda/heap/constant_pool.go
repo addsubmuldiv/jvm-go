@@ -17,7 +17,7 @@ func newConstantPool(class *Class, cfCp classfile.ConstantPool) *ConstantPool {
 	consts := make([]Constant, cpCount)
 	rtCp := &ConstantPool{class, consts}
 
-	for i := 1; i < cpCount; i++ { // todo 常量池的索引从 1 开始？
+	for i := 1; i < cpCount; i++ { // todo 常量池的索引从 1 开始？ —— 是的，第0个位置保存常量池有多少元素
 		cpInfo := cfCp[i]
 		switch cpInfo.(type) {
 		case *classfile.ConstantIntegerInfo:

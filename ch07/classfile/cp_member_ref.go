@@ -1,8 +1,9 @@
+package classfile
+
 // 类里面的字段、方法对应的类名和名字、描述符
 // class_index就是这个字段、方法所属的类名，name_and_type就是字段名、描述符(类型、返回值之类)
 // 注意！！ 这里的都是符号引用，是编译原理的东西，主要是为了支持动态链接操作
 // 和java类里面定义的字段、方法不一样
-package classfile
 
 /*
 CONSTANT_Fieldref_info {

@@ -12,7 +12,7 @@ const pathListSeparator = string(os.PathListSeparator) //路径分隔符，默�
 
 //类路径接口
 type Entry interface {
-	readClass(className string) ([]byte, Entry, error) //
+	readClass(className string) ([]byte, Entry, error) // 在对应的类路径下，根据类名把类的字节码读取出来
 	String() string
 }
 

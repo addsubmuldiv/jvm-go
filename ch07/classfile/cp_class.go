@@ -1,5 +1,6 @@
 package classfile
 
+// ConstantClassInfo 存储一个索引，索引指向符号引用的类名
 type ConstantClassInfo struct {
 	cp        ConstantPool
 	nameIndex uint16 // 指向类名的UTF8字符串

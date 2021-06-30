@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 )
 
+// Classpath 定义了 java 的 classpath，就是按照 boot, ext, user 的顺序来查找 class
 type Classpath struct {
 	bootClasspath Entry
 	extClasspath  Entry
