@@ -10,6 +10,7 @@ type INSTANCE_OF struct {
 	base.Index16Instruction
 }
 
+// 两个操作数，一个是类符号引用，一个是从操作数栈里面弹出的对象
 func (self *INSTANCE_OF) Execute(frame *rtda.Frame) {
 	stack := frame.OperandStack()
 	ref := stack.PopRef()
@@ -20,9 +21,9 @@ func (self *INSTANCE_OF) Execute(frame *rtda.Frame) {
 
 	cp := frame.Method().Class().ConstantPool()
 	classRef := cp.GetConstant(self.Index).(*heap.ClassRef)
-	class := classRef.ResolvedClass()
+	class := classRef.ResolvedClass() // 根据符号引用解析出类
 	if ref.IsInstanceOf(class) {
-		stack.PushInt(1)
+		stack.PushInt(1) // 判断结果压栈
 	} else {
 		stack.PushInt(0)
 	}

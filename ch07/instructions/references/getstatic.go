@@ -26,6 +26,7 @@ func (self *GET_STATIC) Execute(frame *rtda.Frame) {
 	slots := class.StaticVars()
 	stack := frame.OperandStack()
 
+	// 从slot里面读取出来然后放到stack里面
 	switch descriptor[0] {
 	case 'Z', 'B', 'C', 'S', 'I':
 		stack.PushInt(slots.GetInt(slotId))

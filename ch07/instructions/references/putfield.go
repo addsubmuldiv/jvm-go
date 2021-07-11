@@ -6,15 +6,16 @@ import (
 	"ch07/rtda/heap"
 )
 
-// Set field in object
+// PUT_FIELD Set field in object
+// 三个操作数，第一个是符号引用的常量池索引，第二个是值，第三个是实例对象的引用
 type PUT_FIELD struct{ base.Index16Instruction }
 
 func (self *PUT_FIELD) Execute(frame *rtda.Frame) {
 	currentMethod := frame.Method()
 	currentClass := currentMethod.Class()
 	cp := currentClass.ConstantPool()
-	fieldRef := cp.GetConstant(self.Index).(*heap.FieldRef)
-	field := fieldRef.ResolvedField()
+	fieldRef := cp.GetConstant(self.Index).(*heap.FieldRef) // todo 为什么对象的字段的符号引用也在常量池？ ——常量池是和classfile绑定的貌似，所以会有这种，反正用到的各种东西就忘常量池放
+	field := fieldRef.ResolvedField()                       // todo 一个java文件里面定义的多个类，常量池一样？？ —— 这个接受的都是class文件，应该是单独一个类一个class文件的，即使一开始在一个java文件里面
 
 	if field.IsStatic() {
 		panic("java.lang.IncompatibleClassChangeError")

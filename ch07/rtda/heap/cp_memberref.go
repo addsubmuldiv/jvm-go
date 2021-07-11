@@ -2,9 +2,9 @@ package heap
 
 import "ch07/classfile"
 
-// MemberRef 用于给字段、方法的符号引用嵌套的类型
+// MemberRef 成员变量符号引用，用于给字段、方法的符号引用嵌套的类型
 type MemberRef struct {
-	SymRef
+	SymRef     // 符号引用
 	name       string
 	descriptor string // 这里存放了字段、方法的类型描述符，避免重名的出现，尽管java是但凡重名就不行，但是jvm是可以的，所以需要描述符进行区分
 }

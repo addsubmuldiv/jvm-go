@@ -1,11 +1,16 @@
 package constants
 
+// ldc系列指令属于常量类指令，共3条。其中ldc和ldc_w指令用于加载int、float和字符串常量，
+//java.lang. Class实例或者MethodType和MethodHandle实例。ldc2_w指令用于加载long和double常量。
+//ldc和ldc_w指令的区别仅在于操作数的宽度。
+
 import (
 	"ch07/instructions/base"
 	"ch07/rtda"
 )
 
 // Push item from run-time constant pool
+// ldc系列指令从运行时常量池中加载常量值，并把它推入操作数栈
 type LDC struct{ base.Index8Instruction }
 
 func (self *LDC) Execute(frame *rtda.Frame) {
@@ -40,6 +45,7 @@ func _ldc(frame *rtda.Frame, index uint) {
 // Push long or double from run-time constant pool (wide index)
 type LDC2_W struct{ base.Index16Instruction }
 
+// todo 这里为什么单独实现了？
 func (self *LDC2_W) Execute(frame *rtda.Frame) {
 	stack := frame.OperandStack()
 	cp := frame.Method().Class().ConstantPool()

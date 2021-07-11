@@ -8,6 +8,7 @@ type Field struct {
 	slotId          uint
 }
 
+// 读取字段的各类信息，这里的就是类本身的字段
 func newFields(class *Class, cfFields []*classfile.MemberInfo) []*Field {
 	fields := make([]*Field, len(cfFields))
 	for i, cfField := range cfFields {

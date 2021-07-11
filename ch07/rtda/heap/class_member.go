@@ -47,6 +47,7 @@ func (self *ClassMember) Class() *Class {
 }
 
 // jvms 5.4.4
+// 成员变量的访问控制
 func (self *ClassMember) isAccessibleTo(d *Class) bool {
 	if self.IsPublic() {
 		return true

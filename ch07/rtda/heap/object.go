@@ -6,6 +6,7 @@ type Object struct {
 	fields Slots
 }
 
+// 就是让对象里面存个指向class的指针，然后初始化一下字段的slot
 func newObject(class *Class) *Object {
 	return &Object{
 		class:  class,

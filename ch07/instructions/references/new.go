@@ -10,6 +10,7 @@ type NEW struct {
 	base.Index16Instruction
 }
 
+// 先解析出class，然后调用NewObject
 func (self *NEW) Execute(frame *rtda.Frame) {
 	cp := frame.Method().Class().ConstantPool()
 	classRef := cp.GetConstant(self.Index).(*heap.ClassRef)

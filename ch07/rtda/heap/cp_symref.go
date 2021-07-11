@@ -1,12 +1,13 @@
 package heap
 
-// 符号引用公用的嵌套类
+// 符号引用公用的嵌套类，包括成员变量符号引用、 TODO
 type SymRef struct {
 	cp        *ConstantPool // 存放符号引用所在常量池的指针
-	className string        // 符号引用的类名
+	className string        // 符号引用的类名，就是下面这个class指针指的那个类的名字
 	class     *Class        // 缓存被引用的那个类型的指针
 }
 
+// 解析class的符号引用
 func (self *SymRef) ResolvedClass() *Class {
 	if self.class == nil {
 		self.resolveClassRef()

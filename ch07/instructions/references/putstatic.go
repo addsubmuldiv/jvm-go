@@ -6,18 +6,20 @@ import (
 	"ch07/rtda/heap"
 )
 
+// 给类的某个静态变量赋值
 type PUT_STATIC struct {
 	base.Index16Instruction
 }
 
 func (self *PUT_STATIC) Execute(frame *rtda.Frame) {
+	// 先拿到当前方法、当前类和当前常量池，然后解析字段符号引用
 	currentMethod := frame.Method()
 	currentClass := currentMethod.Class()
 	cp := currentClass.ConstantPool()
 	fieldRef := cp.GetConstant(self.Index).(*heap.FieldRef)
 	field := fieldRef.ResolvedField()
-	class := field.Class()
-	// todo: init class
+	class := field.Class() // 如果字段的类没初始化，要先初始化
+	// todo: init class	—— 已经完成了
 
 	if !field.IsStatic() {
 		panic("java.lang.IncompatibleClassChangeError")
@@ -28,6 +30,7 @@ func (self *PUT_STATIC) Execute(frame *rtda.Frame) {
 		}
 	}
 
+	// 根据字段类型从操作数栈中弹出相应的值，赋值给这个field对应的slot
 	descriptor := field.Descriptor()
 	slotId := field.SlotId()
 	slots := class.StaticVars()

@@ -23,6 +23,7 @@ CONSTANT_InterfaceMethodref_info {
 }
 */
 
+// 常量池 成员的符号引用  ，就是存个类型，和描述符
 type ConstantMemberrefInfo struct {
 	cp               ConstantPool
 	classIndex       uint16 // 常量池索引，指向类型
