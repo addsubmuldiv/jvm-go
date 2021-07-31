@@ -23,6 +23,50 @@ type Class struct {
 	staticVars        Slots // todo 静态变量也用 Slot ？？
 }
 
+func (self *Class) AccessFlags() uint16 {
+	return self.accessFlags
+}
+
+func (self *Class) SuperClassName() string {
+	return self.superClassName
+}
+
+func (self *Class) InterfaceNames() []string {
+	return self.interfaceNames
+}
+
+func (self *Class) Fields() []*Field {
+	return self.fields
+}
+
+func (self *Class) Methods() []*Method {
+	return self.methods
+}
+
+func (self *Class) Loader() *ClassLoader {
+	return self.loader
+}
+
+func (self *Class) SuperClass() *Class {
+	return self.superClass
+}
+
+func (self *Class) Interfaces() []*Class {
+	return self.interfaces
+}
+
+func (self *Class) InstanceSlotCount() uint {
+	return self.instanceSlotCount
+}
+
+func (self *Class) StaticSlotCount() uint {
+	return self.staticSlotCount
+}
+
+func (self *Class) Name() string {
+	return self.name
+}
+
 // classfile 读取文件，然后从 classfile 里面把类相关的信息都取出来，放在这里
 // 有点 java web 分层的味道
 func newClass(cf *classfile.ClassFile) *Class {
