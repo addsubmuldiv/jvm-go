@@ -6,7 +6,7 @@ const (
 	ACC_PROTECTED    = 0x0004 //       field method		只允许自己和子类访问
 	ACC_STATIC       = 0x0008 //       field method		静态
 	ACC_FINAL        = 0x0010 // class field method		不可变
-	ACC_SUPER        = 0x0020 // class					超类
+	ACC_SUPER        = 0x0020 // class					jdk 1.2 之后的编译器编译出来的都为真
 	ACC_SYNCHRONIZED = 0x0020 //             method		同步
 	ACC_VOLATILE     = 0x0040 //       field			线程共享变量随时写回主存
 	ACC_BRIDGE       = 0x0040 //             method

@@ -8,7 +8,8 @@ import (
 
 // PUT_FIELD Set field in object
 // 三个操作数，第一个是符号引用的常量池索引，第二个是值，第三个是实例对象的引用
-type PUT_FIELD struct{ base.Index16Instruction }
+// 值是从当前帧的操作数栈里面取
+type PUT_FIELD struct{ base.Index16Instruction } // 这个是 符号引用 在常量池的索引
 
 func (self *PUT_FIELD) Execute(frame *rtda.Frame) {
 	currentMethod := frame.Method()
@@ -30,6 +31,7 @@ func (self *PUT_FIELD) Execute(frame *rtda.Frame) {
 	slotId := field.SlotId()
 	stack := frame.OperandStack()
 
+	// 以下，根据 field 的不同类型，从操作数栈里面弹一个值出来，给它赋值
 	switch descriptor[0] {
 	case 'Z', 'B', 'C', 'S', 'I':
 		val := stack.PopInt()

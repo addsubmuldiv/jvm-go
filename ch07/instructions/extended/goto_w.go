@@ -1,4 +1,5 @@
-// Package extended goto_w指令和goto指令的唯一区别就是索引从2字节变成了4字节。
+// Package extended
+// goto_w指令和goto指令的唯一区别就是索引从2字节变成了4字节。
 package extended
 
 import (

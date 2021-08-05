@@ -39,7 +39,15 @@ func (self *Thread) CurrentFrame() *Frame {
 	return self.stack.top()
 }
 
+func (self *Thread) TopFrame() *Frame {
+	return self.stack.top()
+}
+
 // NewFrame 新建一个栈帧，俩参数是最大局部变量表大小、最大操作数栈大小
 func (self *Thread) NewFrame(method *heap.Method) *Frame {
 	return newFrame(self, method)
+}
+
+func (self *Thread) IsStackEmpty() bool {
+	return self.stack.isEmpty()
 }
