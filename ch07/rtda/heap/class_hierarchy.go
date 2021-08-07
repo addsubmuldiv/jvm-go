@@ -12,16 +12,6 @@ func (self *Class) isAssignableFrom(other *Class) bool {
 	}
 }
 
-// self extends c
-func (self *Class) IsSubClassOf(other *Class) bool {
-	for c := self.superClass; c != nil; c = c.superClass { // 向上溯源
-		if c == other {
-			return true
-		}
-	}
-	return false
-}
-
 // self implements iface
 func (self *Class) IsImplements(iface *Class) bool {
 	for c := self; c != nil; c = c.superClass {
@@ -29,6 +19,16 @@ func (self *Class) IsImplements(iface *Class) bool {
 			if i == iface || i.isSubInterfaceOf(iface) {
 				return true
 			}
+		}
+	}
+	return false
+}
+
+// self extends c
+func (self *Class) IsSubClassOf(other *Class) bool {
+	for c := self.superClass; c != nil; c = c.superClass {
+		if c == other {
+			return true
 		}
 	}
 	return false

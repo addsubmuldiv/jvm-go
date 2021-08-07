@@ -13,7 +13,6 @@ import . "ch07/instructions/stack"
 import . "ch07/instructions/stores"
 import . "ch07/instructions/references"
 
-// NoOperandsInstruction singletons
 var (
 	nop         = &NOP{}
 	aconst_null = &ACONST_NULL{}
@@ -152,12 +151,12 @@ var (
 	fcmpg   = &FCMPG{}
 	dcmpl   = &DCMPL{}
 	dcmpg   = &DCMPG{}
-	// ireturn = &IRETURN{}
-	// lreturn = &LRETURN{}
-	// freturn = &FRETURN{}
-	// dreturn = &DRETURN{}
-	// areturn = &ARETURN{}
-	// _return = &RETURN{}
+	ireturn = &IRETURN{}
+	lreturn = &LRETURN{}
+	freturn = &FRETURN{}
+	dreturn = &DRETURN{}
+	areturn = &ARETURN{}
+	_return = &RETURN{}
 	// arraylength   = &ARRAY_LENGTH{}
 	// athrow        = &ATHROW{}
 	// monitorenter  = &MONITOR_ENTER{}
@@ -259,22 +258,22 @@ func NewInstruction(opcode byte) base.Instruction {
 		return aload_2
 	case 0x2d:
 		return aload_3
-	//case 0x2e:
-	//	return iaload
-	//case 0x2f:
-	//	return laload
-	//case 0x30:
-	//	return faload
-	//case 0x31:
-	//	return daload
-	//case 0x32:
-	//	return aaload
-	//case 0x33:
-	//	return baload
-	//case 0x34:
-	//	return caload
-	//case 0x35:
-	//	return saload
+	// case 0x2e:
+	// 	return iaload
+	// case 0x2f:
+	// 	return laload
+	// case 0x30:
+	// 	return faload
+	// case 0x31:
+	// 	return daload
+	// case 0x32:
+	// 	return aaload
+	// case 0x33:
+	// 	return baload
+	// case 0x34:
+	// 	return caload
+	// case 0x35:
+	// 	return saload
 	case 0x36:
 		return &ISTORE{}
 	case 0x37:
@@ -511,18 +510,18 @@ func NewInstruction(opcode byte) base.Instruction {
 		return &TABLE_SWITCH{}
 	case 0xab:
 		return &LOOKUP_SWITCH{}
-		// case 0xac:
-		// 	return ireturn
-		// case 0xad:
-		// 	return lreturn
-		// case 0xae:
-		// 	return freturn
-		// case 0xaf:
-		// 	return dreturn
-		// case 0xb0:
-		// 	return areturn
-		// case 0xb1:
-		// 	return _return
+	case 0xac:
+		return ireturn
+	case 0xad:
+		return lreturn
+	case 0xae:
+		return freturn
+	case 0xaf:
+		return dreturn
+	case 0xb0:
+		return areturn
+	case 0xb1:
+		return _return
 	case 0xb2:
 		return &GET_STATIC{}
 	case 0xb3:
@@ -535,10 +534,10 @@ func NewInstruction(opcode byte) base.Instruction {
 		return &INVOKE_VIRTUAL{}
 	case 0xb7:
 		return &INVOKE_SPECIAL{}
-	//case 0xb8:
-	// 	return &INVOKE_STATIC{}
-	// case 0xb9:
-	// 	return &INVOKE_INTERFACE{}
+	case 0xb8:
+		return &INVOKE_STATIC{}
+	case 0xb9:
+		return &INVOKE_INTERFACE{}
 	// case 0xba:
 	// 	return &INVOKE_DYNAMIC{}
 	case 0xbb:
