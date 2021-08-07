@@ -19,7 +19,7 @@ func InvokeMethod(invokerFrame *rtda.Frame, method *heap.Method) {
 		}
 	}
 
-	// hack!
+	// hack!  暂时略过本地方法
 	if method.IsNative() {
 		if method.Name() == "registerNatives" {
 			thread.PopFrame()

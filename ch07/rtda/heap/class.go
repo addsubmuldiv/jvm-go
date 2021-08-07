@@ -21,6 +21,15 @@ type Class struct {
 	instanceSlotCount uint // todo 这里是说，类知道自己有几个对象的意思？
 	staticSlotCount   uint
 	staticVars        Slots // todo 静态变量也用 Slot ？？
+	initStarted       bool
+}
+
+func (self *Class) InitStarted() bool {
+	return self.initStarted
+}
+
+func (self *Class) StartInit() {
+	self.initStarted = true
 }
 
 func (self *Class) AccessFlags() uint16 {
@@ -154,4 +163,8 @@ func (self *Class) GetPackageName() string {
 		return self.name[:i]
 	}
 	return ""
+}
+
+func (self *Class) GetClinitMethod() *Method {
+	return self.getStaticMethod("<clinit>", "()V")
 }
