@@ -7,7 +7,7 @@ type Method struct {
 	maxStack     uint // 下面这些东西都是记录在 code 属性里面的
 	maxLocals    uint
 	code         []byte
-	argSlotCount uint
+	argSlotCount uint // 方法有几个参数（误）
 }
 
 func (self *Method) ArgSlotCount() uint {
@@ -34,7 +34,7 @@ func (self *Method) calcArgSlotCount() {
 			self.argSlotCount++
 		}
 	}
-	if !self.IsStatic() {
+	if !self.IsStatic() { // 实例方法，要加一个 this 引用参数
 		self.argSlotCount++ // `this` reference
 	}
 }

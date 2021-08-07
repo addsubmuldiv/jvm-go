@@ -20,7 +20,7 @@ func (self *INVOKE_VIRTUAL) Execute(frame *rtda.Frame) {
 		panic("java.lang.IncompatibleClassChangeError")
 	}
 
-	ref := frame.OperandStack().GetRefFromTop(resolvedMethod.ArgSlotCount() - 1)
+	ref := frame.OperandStack().GetRefFromTop(resolvedMethod.ArgSlotCount() - 1) // 找到 this，this 指向的就是实际的对象
 	if ref == nil {
 		// hack!
 		if methodRef.Name() == "println" {
@@ -40,8 +40,8 @@ func (self *INVOKE_VIRTUAL) Execute(frame *rtda.Frame) {
 		panic("java.lang.IllegalAccessError")
 	}
 
-	methodToBeInvoked := heap.LookupMethodInClass(ref.Class(),
-		methodRef.Name(), methodRef.Descriptor())
+	methodToBeInvoked := heap.LookupMethodInClass(ref.Class(), // 这里就是 查找实际应该是哪个方法，如果现在这个类没有实现这个方法，就去父类找
+		methodRef.Name(), methodRef.Descriptor()) // 这里可以用 虚函数表(vtable)加速查找
 	if methodToBeInvoked == nil || methodToBeInvoked.IsAbstract() {
 		panic("java.lang.AbstractMethodError")
 	}

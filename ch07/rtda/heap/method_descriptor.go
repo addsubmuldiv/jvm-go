@@ -1,8 +1,9 @@
 package heap
 
+// jvm里面的描述符都是一些莫名其妙的字符串，需要解析出来
 type MethodDescriptor struct {
-	parameterTypes []string
-	returnType     string
+	parameterTypes []string // 方法的参数类型
+	returnType     string   // 方法返回类型
 }
 
 func (self *MethodDescriptor) addParameterType(t string) {

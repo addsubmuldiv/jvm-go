@@ -25,7 +25,7 @@ func (self *INVOKE_SPECIAL) Execute(frame *rtda.Frame) {
 		panic("java.lang.IncompatibleClassChangeError")
 	}
 
-	ref := frame.OperandStack().GetRefFromTop(resolvedMethod.ArgSlotCount() - 1)
+	ref := frame.OperandStack().GetRefFromTop(resolvedMethod.ArgSlotCount() - 1) // 从操作数栈中弹出this引用
 	if ref == nil {
 		panic("java.lang.NullPointerException")
 	}
@@ -41,7 +41,7 @@ func (self *INVOKE_SPECIAL) Execute(frame *rtda.Frame) {
 	}
 
 	methodToBeInvoked := resolvedMethod
-	if currentClass.IsSuper() &&
+	if currentClass.IsSuper() && // 涉及到 ACC_SUPER 标志，实际上没啥卵用
 		resolvedClass.IsSuperClassOf(currentClass) &&
 		resolvedMethod.Name() != "<init>" {
 

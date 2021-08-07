@@ -13,6 +13,7 @@ type INVOKE_INTERFACE struct {
 	// zero uint8
 }
 
+// 因为指令结构和其他仨不一样，所以要重写这个方法
 func (self *INVOKE_INTERFACE) FetchOperands(reader *base.BytecodeReader) {
 	self.Index = uint(reader.ReadUint16())
 	reader.ReadUint8() // count
@@ -31,7 +32,7 @@ func (self *INVOKE_INTERFACE) Execute(frame *rtda.Frame) {
 	if ref == nil {
 		panic("java.lang.NullPointerException") // todo
 	}
-	if !ref.Class().IsImplements(methodRef.ResolvedClass()) {
+	if !ref.Class().IsImplements(methodRef.ResolvedClass()) { // 如果 this 指向对象的类没有实现接口
 		panic("java.lang.IncompatibleClassChangeError")
 	}
 

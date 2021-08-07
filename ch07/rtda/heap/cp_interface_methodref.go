@@ -22,10 +22,12 @@ func (self *InterfaceMethodRef) ResolvedInterfaceMethod() *Method {
 }
 
 // jvms8 5.4.3.4
+// 接口方法符号引用，指通过接口调用的方法
+// TODO 这里返回的这个方法，是被某个类实现的？还是就接口本身的那个声明的？看代码应该是已经实现了的，但是符号引用怎么知道自己是哪个具体的实现类？
 func (self *InterfaceMethodRef) resolveInterfaceMethodRef() {
 	//class := self.ResolveClass()
 	d := self.cp.class
-	c := self.ResolvedClass()
+	c := self.ResolvedClass() // 解析出声明该方法的接口
 	if !c.IsInterface() {
 		panic("java.lang.IncompatibleClassChangeError")
 	}

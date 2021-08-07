@@ -14,8 +14,8 @@ func InvokeMethod(invokerFrame *rtda.Frame, method *heap.Method) {
 	argSlotCount := int(method.ArgSlotCount())
 	if argSlotCount > 0 {
 		for i := argSlotCount - 1; i >= 0; i-- {
-			slot := invokerFrame.OperandStack().PopSlot()
-			newFrame.LocalVars().SetSlot(uint(i), slot)
+			slot := invokerFrame.OperandStack().PopSlot() // 从 invokerFrame 的操作数栈里面取出参数
+			newFrame.LocalVars().SetSlot(uint(i), slot)   // 放到 被执行方法的那个 newFrame 的局部变量表里面
 		}
 	}
 
