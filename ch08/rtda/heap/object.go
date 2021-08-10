@@ -2,15 +2,17 @@
 package heap
 
 type Object struct {
-	class  *Class
-	fields Slots
+	class *Class
+	//fields Slots
+	data interface{}
 }
 
 // 就是让对象里面存个指向class的指针，然后初始化一下字段的slot
+// 仅针对普通对象
 func newObject(class *Class) *Object {
 	return &Object{
-		class:  class,
-		fields: newSlots(class.instanceSlotCount),
+		class: class,
+		data:  newSlots(class.instanceSlotCount),
 	}
 }
 
@@ -19,7 +21,7 @@ func (self *Object) Class() *Class {
 	return self.class
 }
 func (self *Object) Fields() Slots {
-	return self.fields
+	return self.data.(Slots)
 }
 
 func (self *Object) IsInstanceOf(class *Class) bool {
