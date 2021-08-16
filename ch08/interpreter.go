@@ -9,12 +9,26 @@ import (
 )
 
 // 虚拟机执行代码的起始入口，从 class 文件里面的 methodInfo 入手
-func interpret(method *heap.Method, logInst bool) {
+func interpret(method *heap.Method, logInst bool, args []string) {
 	thread := rtda.NewThread() // 新建一个线程
 	frame := thread.NewFrame(method)
 	thread.PushFrame(frame) // 线程本质就是一堆以栈形式存起来的栈帧 + 一个PC，这里就是新建一个帧然后放进虚拟机栈
+
+	jArgs := createArgsArray(method.Class().Loader(), args)
+	frame.LocalVars().SetRef(0, jArgs)
+
 	defer catchErr(frame)
 	loop(thread, logInst)
+}
+
+func createArgsArray(loader *heap.ClassLoader, args []string) *heap.Object {
+	stringClass := loader.LoadClass("java/lang/String")
+	argsArr := stringClass.ArrayClass().NewArray(uint(len(args)))
+	jArgs := argsArr.Refs()
+	for i, arg := range args {
+		jArgs[i] = heap.JString(loader, arg)
+	}
+	return argsArr
 }
 
 func catchErr(frame *rtda.Frame) {
