@@ -4,7 +4,16 @@ package heap
 type Object struct {
 	class *Class
 	//fields Slots
-	data interface{}
+	data  interface{}
+	extra interface{}
+}
+
+func (self *Object) Extra() interface{} {
+	return self.extra
+}
+
+func (self *Object) SetExtra(extra interface{}) {
+	self.extra = extra
 }
 
 // 就是让对象里面存个指向class的指针，然后初始化一下字段的slot

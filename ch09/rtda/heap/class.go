@@ -22,6 +22,11 @@ type Class struct {
 	staticSlotCount   uint
 	staticVars        Slots // todo 静态变量也用 Slot ？？
 	initStarted       bool
+	jClass            *Object // java.lang.Class实例
+}
+
+func (self *Class) JClass() *Object {
+	return self.jClass
 }
 
 func (self *Class) InitStarted() bool {

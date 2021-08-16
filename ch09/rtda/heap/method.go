@@ -17,18 +17,47 @@ func (self *Method) ArgSlotCount() uint {
 func newMethods(class *Class, cfMethods []*classfile.MemberInfo) []*Method {
 	methods := make([]*Method, len(cfMethods))
 	for i, cfMethod := range cfMethods {
-		methods[i] = &Method{}
-		methods[i].class = class
-		methods[i].copyMemberInfo(cfMethod)
-		methods[i].copyAttributes(cfMethod)
-		methods[i].calcArgSlotCount()
+		methods[i] = newMethod(class, cfMethod)
 	}
 	return methods
 }
 
-func (self *Method) calcArgSlotCount() {
-	parsedDescriptor := parseMethodDescriptor(self.descriptor)
-	for _, paramType := range parsedDescriptor.parameterTypes {
+func newMethod(class *Class, cfMethod *classfile.MemberInfo) *Method {
+	method := &Method{}
+	method.class = class
+	method.copyMemberInfo(cfMethod)
+	method.copyAttributes(cfMethod)
+	md := parseMethodDescriptor(method.descriptor)
+	method.calcArgSlotCount(md.parameterTypes)
+	if method.IsNative() {
+		method.injectCodeAttribute(md.returnType)
+	}
+	return method
+}
+
+func (self *Method) injectCodeAttribute(returnType string) {
+	self.maxStack = 4 // todo
+	self.maxLocals = self.argSlotCount
+	switch returnType[0] {
+	case 'V':
+		self.code = []byte{0xfe, 0xb1} // return
+	case 'L', '[':
+		self.code = []byte{0xfe, 0xb0} // areturn
+	case 'D':
+		self.code = []byte{0xfe, 0xaf} // dreturn
+	case 'F':
+		self.code = []byte{0xfe, 0xae} // freturn
+	case 'J':
+		self.code = []byte{0xfe, 0xad} // lreturn
+	default:
+		self.code = []byte{0xfe, 0xac} // ireturn
+	}
+}
+
+func (self *Method) calcArgSlotCount(paramTypes []string) {
+	//parsedDescriptor := parseMethodDescriptor(self.descriptor)
+	//for _, paramType := range parsedDescriptor.parameterTypes {
+	for _, paramType := range paramTypes {
 		self.argSlotCount++
 		if paramType == "J" || paramType == "D" { // J 为 long 的描述符，D 为 double 的描述符
 			self.argSlotCount++

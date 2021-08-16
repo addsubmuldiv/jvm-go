@@ -3,7 +3,6 @@ package base
 import (
 	"ch09/rtda"
 	"ch09/rtda/heap"
-	"fmt"
 )
 
 func InvokeMethod(invokerFrame *rtda.Frame, method *heap.Method) {
@@ -20,12 +19,12 @@ func InvokeMethod(invokerFrame *rtda.Frame, method *heap.Method) {
 	}
 
 	// hack!  暂时略过本地方法
-	if method.IsNative() {
-		if method.Name() == "registerNatives" {
-			thread.PopFrame()
-		} else {
-			panic(fmt.Sprintf("native method: %v.%v%v\n",
-				method.Class().Name(), method.Name(), method.Descriptor()))
-		}
-	}
+	//if method.IsNative() {
+	//	if method.Name() == "registerNatives" {
+	//		thread.PopFrame()
+	//	} else {
+	//		panic(fmt.Sprintf("native method: %v.%v%v\n",
+	//			method.Class().Name(), method.Name(), method.Descriptor()))
+	//	}
+	//}
 }

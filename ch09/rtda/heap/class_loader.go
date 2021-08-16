@@ -20,22 +20,65 @@ type ClassLoader struct {
 }
 
 func NewClassLoader(cp *classpath.Classpath, verboseFlag bool) *ClassLoader {
-	return &ClassLoader{
+	loader := &ClassLoader{
 		cp:          cp,
 		verboseFlag: verboseFlag,
 		classMap:    make(map[string]*Class),
 	}
+	loader.loadBasicClasses()
+	loader.loadPrimitiveClasses()
+	return loader
+}
+
+// loadBasicClasses() 函数先加载java.lang.Class类，这又会触发java.lang.Object等类和接口的加载。然后遍历classMap，给已经加载的每一个类关联类对象。
+func (self *ClassLoader) loadBasicClasses() {
+	jlClassClass := self.LoadClass("java/lang/Class") // 先加载了这个
+	for _, class := range self.classMap {
+		if class.jClass == nil {
+			class.jClass = jlClassClass.NewObject()
+			class.jClass.extra = class
+		}
+	}
+}
+
+func (self *ClassLoader) loadPrimitiveClasses() {
+	for primitiveType, _ := range primitiveTypes {
+		self.loadPrimitiveClass(primitiveType)
+	}
+}
+
+func (self *ClassLoader) loadPrimitiveClass(className string) {
+	class := &Class{
+		accessFlags: ACC_PUBLIC, // todo
+		name:        className,
+		loader:      self,
+		initStarted: true,
+	}
+	class.jClass = self.classMap["java/lang/Class"].NewObject()
+	class.jClass.extra = class
+	self.classMap[className] = class
 }
 
 // 如果已经在方法区了，就返回类型，不在再去load
 func (self *ClassLoader) LoadClass(name string) *Class {
 	if class, ok := self.classMap[name]; ok {
+		// already loaded
 		return class
 	}
-	if name[0] == '[' {
-		return self.loadArrayClass(name)
+
+	var class *Class
+	if name[0] == '[' { // array class
+		class = self.loadArrayClass(name)
+	} else {
+		class = self.loadNonArrayClass(name)
 	}
-	return self.loadNonArrayClass(name)
+
+	if jlClassClass, ok := self.classMap["java/lang/Class"]; ok {
+		class.jClass = jlClassClass.NewObject()
+		class.jClass.extra = class
+	}
+
+	return class
 }
 
 // 类的加载大致可以分为三个步骤：首先找到class文件并把数据读取到内存；然后解析class文件，

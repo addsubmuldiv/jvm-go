@@ -572,8 +572,8 @@ func NewInstruction(opcode byte) base.Instruction {
 	// case 0xc9:
 	// 	return &JSR_W{}
 	// case 0xca: breakpoint
-	// case 0xfe: impdep1
-	// case 0xff: impdep2
+	//case 0xfe: impdep1
+	//case 0xff: impdep2
 	default:
 		panic(fmt.Errorf("Unsupported opcode: 0x%x!", opcode))
 	}
