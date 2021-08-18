@@ -4,6 +4,7 @@ import (
 	"ch09/instructions/base"
 	"ch09/native"
 	_ "ch09/native/java/lang"
+	_ "ch09/native/sun/misc"
 	"ch09/rtda"
 )
 

@@ -179,6 +179,34 @@ func (self *Class) ArrayClass() *Class {
 	return self.loader.LoadClass(arrayClassName)
 }
 
+func (self *Class) getMethod(name, descriptor string, isStatic bool) *Method {
+	for c := self; c != nil; c = c.superClass {
+		for _, method := range c.methods {
+			if method.IsStatic() == isStatic &&
+				method.name == name &&
+				method.descriptor == descriptor {
+
+				return method
+			}
+		}
+	}
+	return nil
+}
+
+func (self *Class) getField(name, descriptor string, isStatic bool) *Field {
+	for c := self; c != nil; c = c.superClass {
+		for _, field := range c.fields {
+			if field.IsStatic() == isStatic &&
+				field.name == name &&
+				field.descriptor == descriptor {
+
+				return field
+			}
+		}
+	}
+	return nil
+}
+
 func (self *Class) isJlObject() bool {
 	return self.name == "java/lang/Object"
 }
@@ -196,4 +224,16 @@ func (self *Class) JavaName() string {
 func (self *Class) IsPrimitive() bool {
 	_, ok := primitiveTypes[self.name]
 	return ok
+}
+func (self *Class) GetInstanceMethod(name, descriptor string) *Method {
+	return self.getMethod(name, descriptor, false)
+}
+
+func (self *Class) GetRefVar(fieldName, fieldDescriptor string) *Object {
+	field := self.getField(fieldName, fieldDescriptor, true)
+	return self.staticVars.GetRef(field.slotId)
+}
+func (self *Class) SetRefVar(fieldName, fieldDescriptor string, ref *Object) {
+	field := self.getField(fieldName, fieldDescriptor, true)
+	self.staticVars.SetRef(field.slotId, ref)
 }
