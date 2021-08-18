@@ -188,3 +188,12 @@ func (self *Class) isJlCloneable() bool {
 func (self *Class) isJioSerializable() bool {
 	return self.name == "java/io/Serializable"
 }
+
+func (self *Class) JavaName() string {
+	return strings.Replace(self.name, "/", ".", -1)
+}
+
+func (self *Class) IsPrimitive() bool {
+	_, ok := primitiveTypes[self.name]
+	return ok
+}

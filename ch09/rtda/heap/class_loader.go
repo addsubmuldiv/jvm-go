@@ -90,7 +90,6 @@ func (self *ClassLoader) loadNonArrayClass(name string) *Class {
 	if self.verboseFlag {
 		fmt.Printf("[Loaded %s from %s]\n", name, entry)
 	}
-	fmt.Printf("[Loaded %s from %s]\n", name, entry)
 	return class
 }
 

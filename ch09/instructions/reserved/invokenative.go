@@ -3,6 +3,7 @@ package reserved
 import (
 	"ch09/instructions/base"
 	"ch09/native"
+	_ "ch09/native/java/lang"
 	"ch09/rtda"
 )
 
