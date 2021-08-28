@@ -4,7 +4,7 @@ import "ch09/classfile"
 
 type Field struct {
 	ClassMember
-	constValueIndex uint
+	constValueIndex uint // 常量池索引
 	slotId          uint
 }
 

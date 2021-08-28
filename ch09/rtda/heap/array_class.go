@@ -1,5 +1,6 @@
 package heap
 
+// 创建数组对象，分配数组空间
 func (self *Class) NewArray(count uint) *Object {
 	if !self.IsArray() {
 		panic("Not array class: " + self.name)
@@ -30,6 +31,7 @@ func (self *Class) IsArray() bool {
 	return self.name[0] == '['
 }
 
+// 从数组类获取元素类
 func (self *Class) ComponentClass() *Class {
 	componentClassName := getComponentClassName(self.name)
 	return self.loader.LoadClass(componentClassName)

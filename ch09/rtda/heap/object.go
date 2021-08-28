@@ -5,7 +5,7 @@ type Object struct {
 	class *Class
 	//fields Slots
 	data  interface{}
-	extra interface{}
+	extra interface{} // extra字段用来记录Object结构体实例的额外信息, 第9章，只用它来记录类对象对应的Class结构体指针。
 }
 
 func (self *Object) Extra() interface{} {

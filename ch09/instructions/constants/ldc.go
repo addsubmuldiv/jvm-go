@@ -51,7 +51,7 @@ func _ldc(frame *rtda.Frame, index uint) {
 // Push long or double from run-time constant pool (wide index)
 type LDC2_W struct{ base.Index16Instruction }
 
-// todo 这里为什么单独实现了？
+// todo 这里为什么单独实现了？ —— 因为是 long 和 double
 func (self *LDC2_W) Execute(frame *rtda.Frame) {
 	stack := frame.OperandStack()
 	cp := frame.Method().Class().ConstantPool()

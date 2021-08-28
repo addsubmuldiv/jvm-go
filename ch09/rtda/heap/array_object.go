@@ -25,6 +25,7 @@ func (self *Object) Refs() []*Object {
 	return self.data.([]*Object)
 }
 
+// 对象的操作，是数组返回长度，否则报错不是数组
 func (self *Object) ArrayLength() int32 {
 	switch self.data.(type) {
 	case []int8:

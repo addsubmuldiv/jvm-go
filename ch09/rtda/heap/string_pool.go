@@ -2,6 +2,8 @@ package heap
 
 import "unicode/utf16"
 
+// utf8 -> utf16，用go字符串索引java字符串
+// 字符串池
 var internedStrings = map[string]*Object{}
 
 // todo
@@ -14,7 +16,7 @@ func JString(loader *ClassLoader, goStr string) *Object {
 	chars := stringToUtf16(goStr)
 	jChars := &Object{loader.LoadClass("[C"), chars, nil}
 
-	jStr := loader.LoadClass("java/lang/String").NewObject()
+	jStr := loader.LoadClass("java/lang/String").NewObject() // String 对象
 	jStr.SetRefVar("value", "[C", jChars)
 
 	internedStrings[goStr] = jStr

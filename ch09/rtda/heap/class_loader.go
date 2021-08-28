@@ -68,12 +68,12 @@ func (self *ClassLoader) LoadClass(name string) *Class {
 
 	var class *Class
 	if name[0] == '[' { // array class
-		class = self.loadArrayClass(name)
+		class = self.loadArrayClass(name) // 这里的 class 是一个特制的数组类
 	} else {
 		class = self.loadNonArrayClass(name)
 	}
 
-	if jlClassClass, ok := self.classMap["java/lang/Class"]; ok {
+	if jlClassClass, ok := self.classMap["java/lang/Class"]; ok { // 给 class 类也整个 类对象， 然后互相指
 		class.jClass = jlClassClass.NewObject()
 		class.jClass.extra = class
 	}
@@ -191,7 +191,7 @@ func calcInstanceFieldSlotIds(class *Class) {
 	class.instanceSlotCount = slotId
 }
 
-// 计算静态字段个数   todo 为什么静态字段不用算超类的个数?
+// 计算静态字段个数, 顺便编个号   todo 为什么静态字段不用算超类的个数?   —— 是因为超类静态字段就是由超类自己保存的
 func calcStaticFieldSlotIds(class *Class) {
 	slotId := uint(0)
 	for _, field := range class.fields {

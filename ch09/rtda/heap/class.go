@@ -12,17 +12,17 @@ type Class struct {
 	name              string // thisClassName
 	superClassName    string
 	interfaceNames    []string
-	constantPool      *ConstantPool // todo 每个类都有个常量池？
-	fields            []*Field
+	constantPool      *ConstantPool // todo 每个类都有个常量池？	—— 是的,或者应该说每个class文件
+	fields            []*Field      // 所有字段，包括 实例、静态
 	methods           []*Method
 	loader            *ClassLoader
 	superClass        *Class
 	interfaces        []*Class
-	instanceSlotCount uint // todo 这里是说，类知道自己有几个对象的意思？
+	instanceSlotCount uint // todo 这里是说，类知道自己有几个对象的意思？	—— 这里是指 实例变量 个数
 	staticSlotCount   uint
-	staticVars        Slots // todo 静态变量也用 Slot ？？
+	staticVars        Slots // todo 静态变量也用 Slot ？？	—— 是的
 	initStarted       bool
-	jClass            *Object // java.lang.Class实例
+	jClass            *Object // java.lang.Class实例，这个和 object 对象里面的 extra 包含的指针是 反向的关系
 }
 
 func (self *Class) JClass() *Object {
@@ -174,6 +174,7 @@ func (self *Class) GetClinitMethod() *Method {
 	return self.getStaticMethod("<clinit>", "()V")
 }
 
+// 根据普通类，获取对应的数组类
 func (self *Class) ArrayClass() *Class {
 	arrayClassName := getArrayClassName(self.name)
 	return self.loader.LoadClass(arrayClassName)

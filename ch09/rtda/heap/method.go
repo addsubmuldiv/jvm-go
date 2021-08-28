@@ -35,6 +35,7 @@ func newMethod(class *Class, cfMethod *classfile.MemberInfo) *Method {
 	return method
 }
 
+// 给本地方法注入Code属性，只有两条指令，第一条都是FE，第二条根据返回值类型决定哪条返回指令
 func (self *Method) injectCodeAttribute(returnType string) {
 	self.maxStack = 4 // todo
 	self.maxLocals = self.argSlotCount

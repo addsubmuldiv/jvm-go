@@ -18,6 +18,7 @@ const (
 )
 
 // 俩操作数，第一个atype
+// 创建基本类型数组
 type NEW_ARRAY struct {
 	atype uint8 // 表示要创建哪种类型的数组
 }
@@ -39,6 +40,7 @@ func (self *NEW_ARRAY) Execute(frame *rtda.Frame) {
 	stack.PushRef(arr)
 }
 
+// 调用类加载器，获取到特制的数组类
 func getPrimitiveArrayClass(loader *heap.ClassLoader, atype uint8) *heap.Class {
 	switch atype {
 	case AT_BOOLEAN:

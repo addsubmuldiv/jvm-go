@@ -21,7 +21,7 @@ func (self *MULTI_ANEW_ARRAY) FetchOperands(reader *base.BytecodeReader) {
 func (self *MULTI_ANEW_ARRAY) Execute(frame *rtda.Frame) {
 	cp := frame.Method().Class().ConstantPool()
 	classRef := cp.GetConstant(uint(self.index)).(*heap.ClassRef)
-	arrClass := classRef.ResolvedClass()
+	arrClass := classRef.ResolvedClass() // 和 anewarray 不一样，这里解析出来就是数组类
 
 	stack := frame.OperandStack()
 	counts := popAndCheckCounts(stack, int(self.dimensions))

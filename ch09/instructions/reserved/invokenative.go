@@ -8,6 +8,7 @@ import (
 	"ch09/rtda"
 )
 
+// 0xFE 即为调用本地方法
 type INVOKE_NATIVE struct {
 	base.NoOperandsInstruction
 }
@@ -18,7 +19,7 @@ func (self *INVOKE_NATIVE) Execute(frame *rtda.Frame) {
 	methodName := method.Name()
 	methodDescriptor := method.Descriptor()
 
-	nativeMethod := native.FindNativeMethod(className, methodName, methodDescriptor)
+	nativeMethod := native.FindNativeMethod(className, methodName, methodDescriptor) // 查找本地方法
 	if nativeMethod == nil {
 		methodInfo := className + "." + methodName + methodDescriptor
 		panic("java.lang.UnsatisfiedLinkError: " + methodInfo)
