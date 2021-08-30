@@ -1,8 +1,8 @@
 package heap
 
 import (
-	"ch09/classfile"
-	"ch09/classpath"
+	"ch10/classfile"
+	"ch10/classpath"
 	"fmt"
 )
 
