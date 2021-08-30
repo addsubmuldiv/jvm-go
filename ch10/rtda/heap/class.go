@@ -23,6 +23,11 @@ type Class struct {
 	staticVars        Slots // todo 静态变量也用 Slot ？？	—— 是的
 	initStarted       bool
 	jClass            *Object // java.lang.Class实例，这个和 object 对象里面的 extra 包含的指针是 反向的关系
+	sourceFile        string
+}
+
+func (self *Class) SourceFile() string {
+	return self.sourceFile
 }
 
 func (self *Class) JClass() *Object {
@@ -92,6 +97,7 @@ func newClass(cf *classfile.ClassFile) *Class {
 	class.constantPool = newConstantPool(class, cf.ConstantPool())
 	class.fields = newFields(class, cf.Fields())
 	class.methods = newMethods(class, cf.Methods())
+	class.sourceFile = getSourceFile(cf)
 	return class
 }
 
@@ -237,4 +243,10 @@ func (self *Class) GetRefVar(fieldName, fieldDescriptor string) *Object {
 func (self *Class) SetRefVar(fieldName, fieldDescriptor string, ref *Object) {
 	field := self.getField(fieldName, fieldDescriptor, true)
 	self.staticVars.SetRef(field.slotId, ref)
+}
+func getSourceFile(cf *classfile.ClassFile) string {
+	if sfAttr := cf.SourceFileAttribute(); sfAttr != nil {
+		return sfAttr.FileName()
+	}
+	return "Unknown"
 }

@@ -4,10 +4,12 @@ import "ch10/classfile"
 
 type Method struct {
 	ClassMember
-	maxStack     uint // 下面这些东西都是记录在 code 属性里面的
-	maxLocals    uint
-	code         []byte
-	argSlotCount uint // 方法有几个参数（误）
+	maxStack        uint // 下面这些东西都是记录在 code 属性里面的
+	maxLocals       uint
+	code            []byte
+	argSlotCount    uint // 方法有几个参数（误）
+	exceptionTable  ExceptionTable
+	lineNumberTable *classfile.LineNumberTableAttribute
 }
 
 func (self *Method) ArgSlotCount() uint {
@@ -74,6 +76,8 @@ func (self *Method) copyAttributes(cfMethod *classfile.MemberInfo) {
 		self.maxStack = codeAttr.MaxStack()
 		self.maxLocals = codeAttr.MaxLocals()
 		self.code = codeAttr.Code()
+		self.lineNumberTable = codeAttr.LineNumberTableAttribute()
+		self.exceptionTable = newExceptionTable(codeAttr.ExceptionTable(), self.class.constantPool)
 	}
 }
 
@@ -104,4 +108,22 @@ func (self *Method) IsVarargs() bool {
 }
 func (self *Method) IsStrict() bool {
 	return 0 != self.accessFlags&ACC_STRICT
+}
+
+func (self *Method) FindExceptionHandler(exClass *Class, pc int) int {
+	handler := self.exceptionTable.findExceptionHandler(exClass, pc)
+	if handler != nil {
+		return handler.handlerPc
+	}
+	return -1
+}
+
+func (self *Method) GetLineNumber(pc int) int {
+	if self.IsNative() {
+		return -2
+	}
+	if self.lineNumberTable == nil {
+		return -1
+	}
+	return self.lineNumberTable.GetLineNumber(pc)
 }
